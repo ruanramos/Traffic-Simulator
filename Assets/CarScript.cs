@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 public class CarScript : MonoBehaviour
 {
     // https://www.casadicas.com.br/construcao/tamanho-de-garagem-e-tamanho-do-carro.html
-    
 
 
     [Serializable]
@@ -20,9 +19,10 @@ public class CarScript : MonoBehaviour
         [SerializeField] private float accelerationReactionTime;
         [SerializeField] private float length;
         [SerializeField] private float width;
-        
+
         private bool _accelerating;
         private bool _breaking;
+        private float _minDistanceToNextCar;
 
         public Car(float speed, float maximumSpeed)
         {
@@ -41,10 +41,17 @@ public class CarScript : MonoBehaviour
             breakReactionTime = Random.Range(0.7f, 3f);
             width = Random.Range(2.2f, 2.6f);
             length = Random.Range(3.7f, 5.2f);
+            _minDistanceToNextCar = 5f;
         }
 
-    // ---------------------- PROPERTIES -------------------
-        
+        // ---------------------- PROPERTIES -------------------
+
+        public float MinDistanceToNextCar
+        {
+            get => _minDistanceToNextCar;
+            set => _minDistanceToNextCar = value;
+        }
+
         public Vector2 StartPosition
         {
             get => startPosition;
@@ -104,7 +111,7 @@ public class CarScript : MonoBehaviour
             get => _breaking;
             set => _breaking = value;
         }
-        
+
         // ---------------------- END OF PROPERTIES -------------------
 
         public IEnumerator Break()
@@ -176,7 +183,16 @@ public class CarScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.DrawLine(car.Position + new Vector2(), car.Position + 100 * Vector2.right, Color.green);
-        var hit = Physics2D.Raycast(car.Position, Vector2.right, 100f);
+        
+        var hit = Physics2D.Raycast(transform.GetChild(0).position, Vector2.right, car.MinDistanceToNextCar);
+        Debug.Log(hit.collider.gameObject.name);
+        // if (hit.distance <= car.MinDistanceToNextCar)
+        // {
+        //     StartCoroutine(StartBreak(car));
+        // }
+        // else if (car.Speed < car.MaximumSpeed)
+        // {
+        //     StartCoroutine(StartAcceleration(car));
+        // }
     }
 }
