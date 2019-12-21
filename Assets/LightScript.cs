@@ -57,7 +57,7 @@ public class LightScript : MonoBehaviour
         }
     }
 
-    private TrafficLight _trafficLight = new TrafficLight(5f, 3f, 0.5f, Color.green);
+    private TrafficLight _trafficLight = new TrafficLight(10f, 5f, 2f, Color.green);
     private SpriteRenderer _spriteRenderer;
 
     private void Start()
