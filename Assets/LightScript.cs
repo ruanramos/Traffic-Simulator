@@ -20,8 +20,7 @@ public class LightScript : MonoBehaviour
         }
 
         // ---------------------- PROPERTIES -------------------
-
-
+        
         public Dictionary<Color, float> PossibleColors
         {
             get => _possibleColors;
@@ -59,14 +58,16 @@ public class LightScript : MonoBehaviour
     }
 
     private TrafficLight _trafficLight = new TrafficLight(5f, 3f, 0.5f, Color.green);
-    
+    private SpriteRenderer _spriteRenderer;
+
     private void Start()
     {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         StartCoroutine(_trafficLight.work());
     }
     
     private void Update()
     {
-        GetComponent<SpriteRenderer>().color = _trafficLight.CurrentColor;
+        _spriteRenderer.color = _trafficLight.CurrentColor;
     }
 }
